@@ -1,4 +1,6 @@
-require_dependency "alexa/application_controller"
+# frozen_string_literal: true
+
+require_dependency 'alexa/application_controller'
 
 module Alexa
   class IntentHandlersController < ApplicationController
@@ -10,19 +12,21 @@ module Alexa
       @resp = nil
       if alexa_request.valid?
         if alexa_request.intent_request?
-          case alexa_request.intent_name
-          when 'AMAZON.CancelIntent'
-            @resp = Alexa::IntentHandlers::GoodBye.new(alexa_context).handle
-          when 'AMAZON.StopIntent'
-            @resp = Alexa::IntentHandlers::GoodBye.new(alexa_context).handle
-          when 'AMAZON.HelpIntent'
-            @resp = Alexa::IntentHandlers::Help.new(alexa_context).handle
-          else
-            @resp = "Alexa::IntentHandlers::#{alexa_request.intent_name}"
-              .constantize
-              .new(alexa_context)
-              .handle
-          end
+          @resp = case alexa_request.intent_name
+                  when 'AMAZON.CancelIntent'
+                    Alexa::IntentHandlers::GoodBye.new(alexa_context).handle
+                  when 'AMAZON.StopIntent'
+                    Alexa::IntentHandlers::GoodBye.new(alexa_context).handle
+                  when 'AMAZON.HelpIntent'
+                    Alexa::IntentHandlers::Help.new(alexa_context).handle
+                  when 'AMAZON.FallbackIntent'
+                    Alexa::IntentHandlers::Fallback.new(alexa_context).handle
+                  else
+                    "Alexa::IntentHandlers::#{alexa_request.intent_name}"
+                  .constantize
+                  .new(alexa_context)
+                  .handle
+                  end
         elsif alexa_request.launch_request?
           @resp = Alexa::IntentHandlers::LaunchApp.new(alexa_context).handle
         elsif alexa_request.session_ended_request?
