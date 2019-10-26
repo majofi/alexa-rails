@@ -3,8 +3,8 @@
   "sessionAttributes": <%= raw (response.intent.session || {}).to_json %>,
   "response": {
     "directives": <%= raw response.directives.to_json %>,
-    "outputSpeech": <%= raw render(partial: 'alexa/output/ssml', locals: { response: response }) %>,
-    "card": <%= raw render(partial: 'alexa/output/card', locals: { response: response }) %>,
+    "outputSpeech": <%= raw render(partial: 'alexa/output/ssml', locals: response.view_locals) %>,
+    "card": <%= raw render(partial: 'alexa/output/card', locals: response.view_locals) %>,
     <% if content_for(:repromt_ssml).present? %>
       "reprompt": {
         "outputSpeech": {

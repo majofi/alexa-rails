@@ -1,6 +1,6 @@
 <% content = render(
       file: response.partial_path(format: :text),
-      locals: { response: response }
+      locals: response.view_locals
     ) %>
 <% card_type = (content_for(:card_type) || "Simple").strip %>
 

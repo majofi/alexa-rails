@@ -2,6 +2,6 @@
   "type": "SSML",
   "ssml": "<%= raw render(
     file: response.partial_path(format: :ssml),
-    locals: { response: response }
+    locals: response.view_locals
   ).gsub(/\n/, "").gsub(/\"/, '\"') %>"
 }

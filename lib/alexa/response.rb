@@ -1,17 +1,29 @@
+# frozen_string_literal: true
+
 module Alexa
   class Response
-    attr_accessor :intent, :directives
+    attr_accessor :intent, :directives, :locals
 
     def initialize(intent:, directives: [])
       @intent = intent
       @directives = directives
+      @locals = {}
       @slots_to_not_render_elicitation = []
     end
 
-    def with(template: )
-      # TODO make this return a new object instead of self.
+    def with(template:)
+      # TODO: make this return a new object instead of self.
       @force_template_filename = template
       self
+    end
+
+    def with_locals(new_locals)
+      @locals = new_locals
+      self
+    end
+
+    def view_locals
+      @locals.merge(response: self)
     end
 
     # Marks a slot for elicitation.
@@ -22,13 +34,11 @@ module Alexa
     #                 response and don't wanna override it.
     def elicit_slot!(slot_to_elicit, skip_render: false)
       directives << {
-        type: "Dialog.ElicitSlot",
+        type: 'Dialog.ElicitSlot',
         slotToElicit: slot_to_elicit
       }
 
-      if skip_render
-        @slots_to_not_render_elicitation << slot_to_elicit
-      end
+      @slots_to_not_render_elicitation << slot_to_elicit if skip_render
     end
 
     def partial_path(format: :ssml, filename: nil)
@@ -70,7 +80,8 @@ module Alexa
 
     def elicit_directives
       return [] if directives.empty?
-      directives.select { |directive| directive[:type] == "Dialog.ElicitSlot" }
+
+      directives.select { |directive| directive[:type] == 'Dialog.ElicitSlot' }
     end
 
     def keep_listening!
@@ -85,14 +96,15 @@ module Alexa
     def end_session?
       return false if keep_listening?
       return false if elicit_directives.any?
-      return true
+
+      true
     end
 
     def intent_directory_name
       # respects namespacing.
       # For example +Alexa::IntentHandlers::MyNameSpace::IntentName+
       # will return +my_name_space/intent_name+.
-      intent.class.name.split("::").drop(2).join("::").underscore
+      intent.class.name.split('::').drop(2).join('::').underscore
     end
   end
 end
