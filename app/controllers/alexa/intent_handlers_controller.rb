@@ -21,6 +21,8 @@ module Alexa
                     Alexa::IntentHandlers::Help.new(alexa_context).handle
                   when 'AMAZON.FallbackIntent'
                     Alexa::IntentHandlers::Fallback.new(alexa_context).handle
+                  when 'AMAZON.YesIntent'
+                    Alexa::IntentHandlers::Yes.new(alexa_context).handle
                   else
                     "Alexa::IntentHandlers::#{alexa_request.intent_name}"
                   .constantize

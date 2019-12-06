@@ -1,0 +1,9 @@
+{
+  "type": "Standard",
+  "title": "<%= (content_for(:card_title) || Alexa.configuration.default_card_title).strip %>",
+  "text": <%= raw content.strip.to_json %>,
+  "image": {
+    "smallImageUrl": <%= content_for(:small_image) %>,
+    "largeImageUrl": <%= content_for(:large_image) %>
+  }
+}

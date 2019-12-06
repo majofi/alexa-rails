@@ -228,6 +228,7 @@ Built-in Intents:
 | AMAZON.CancelIntent | `Alexa::IntentHandlers::GoodBye` |
 | AMAZON.StopIntent | `Alexa::IntentHandlers::GoodBye` |
 | AMAZON.HelpIntent | `Alexa::IntentHandlers::Help` |
+| AMAZON.YesIntent | `Alexa::IntentHandlers::Yes` |
 
 Other request types:
 
