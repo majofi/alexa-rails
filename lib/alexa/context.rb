@@ -50,5 +50,9 @@ module Alexa
     def api_access_token
       request.params["context"]["System"]["apiAccessToken"]
     end
+
+    def intent_name
+      request.params.dig("request", "intent", "name")
+    end
   end
 end

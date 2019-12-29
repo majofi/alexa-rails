@@ -28,6 +28,7 @@ module Alexa
 
       def initialize(alexa_context)
         @context = alexa_context
+        @context.user.update_usage(intent_name: @context.intent_name)
       end
 
       def request
