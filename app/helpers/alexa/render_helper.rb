@@ -13,6 +13,10 @@ module Alexa
       end
     end
 
+    def has_card?(alexa_response)
+      File.exists?(alexa_response.partial_path(format: :text))
+    end
+
     private
 
     def render(*args)
